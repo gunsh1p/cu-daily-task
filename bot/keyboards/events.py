@@ -7,7 +7,7 @@ from utils.truncate_string import truncate_string
 
 def get_events_kb(events: list[Event]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    if events is not None:
+    if len(events) > 0:
         for event in events:
             builder.row(
                 InlineKeyboardButton(
@@ -22,4 +22,10 @@ def get_events_kb(events: list[Event]) -> InlineKeyboardMarkup:
                 callback_data='none'
             )
         )
+    builder.row(
+        InlineKeyboardButton(
+            text='Создать событие',
+            callback_data='create_event'
+        )
+    )
     return builder.as_markup()

@@ -9,7 +9,12 @@ from aiogram.enums.parse_mode import ParseMode
 from tortoise import Tortoise
 
 from config import config
-from handlers import start
+from handlers import (
+    start,
+    create,
+    event
+)
+import tasks
 from db.config import CONFIG_ORM
 
 storage = MemoryStorage()
@@ -24,10 +29,13 @@ async def on_startup(bot: Bot):
 
 async def setup_handlers():
     start.register_router(dp)
+    create.register_router(dp)
+    event.register_router(dp)
 
 
 async def main():
     await Tortoise.init(CONFIG_ORM)
+    asyncio.create_task(tasks.register(bot))
     await setup_handlers()
     dp.startup.register(on_startup)
     await dp.start_polling(bot)

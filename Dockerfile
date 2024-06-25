@@ -9,6 +9,7 @@ COPY bot /app
 COPY config.py /app/config.py
 COPY db /app/db
 COPY utils /app/utils
+COPY tasks /app/tasks
 COPY migrations /app/migrations
 COPY pyproject.toml /app/pyproject.toml
 
