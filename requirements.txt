@@ -1,0 +1,6 @@
+aiogram==3.8.0
+httpx
+aioschedule
+tortoise-orm[asyncmy]
+aerich
+python-dotenv
