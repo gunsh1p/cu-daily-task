@@ -9,11 +9,8 @@ from aiogram.enums.parse_mode import ParseMode
 from tortoise import Tortoise
 
 from config import config
-from handlers import (
-    start,
-    create,
-    event
-)
+from handlers import start, create, event
+from middlewares.admin import IsAdminMiddleware
 import tasks
 from db.config import CONFIG_ORM
 
@@ -33,10 +30,16 @@ async def setup_handlers():
     event.register_router(dp)
 
 
+async def setup_middlewares():
+    dp.message.middleware(IsAdminMiddleware())
+    dp.callback_query.middleware(IsAdminMiddleware())
+
+
 async def main():
     await Tortoise.init(CONFIG_ORM)
     asyncio.create_task(tasks.register(bot))
     await setup_handlers()
+    await setup_middlewares()
     dp.startup.register(on_startup)
     await dp.start_polling(bot)
 
