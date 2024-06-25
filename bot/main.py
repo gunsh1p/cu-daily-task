@@ -11,6 +11,7 @@ from tortoise import Tortoise
 from config import config
 from handlers import start, create, event
 from middlewares.admin import IsAdminMiddleware
+from middlewares.chat import IsDMMiddleware
 import tasks
 from db.config import CONFIG_ORM
 
@@ -31,6 +32,9 @@ async def setup_handlers():
 
 
 async def setup_middlewares():
+    dp.message.middleware(IsDMMiddleware())
+    dp.callback_query.middleware(IsDMMiddleware())
+    
     dp.message.middleware(IsAdminMiddleware())
     dp.callback_query.middleware(IsAdminMiddleware())
 
